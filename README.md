@@ -1,2 +1,2 @@
 # flask_app_v1
-Repl-Planetscale test app
+Just another useless idiot learning Python
