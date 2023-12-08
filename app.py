@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -25,9 +25,9 @@ def something():
   return render_template('home.html', items=LIST)
 
 
-@app.route("/items")
-def items():
-  return "Here is a new route!"
+@app.route("/api")
+def list_LIST():
+  return jsonify(LIST)
 
 
 if __name__ == "__main__":
