@@ -1,6 +1,7 @@
 import os
 from flask import Flask, render_template, jsonify
-from db import engine, text
+from database import engine
+from sqlalchemy import text
 
 app = Flask(__name__)
 
@@ -22,7 +23,8 @@ def something():
 
 @app.route("/api")
 def list_LIST():
-  return jsonify(LIST)
+  jobs = load_jobs_from_db()
+  return jsonify(jobs)
 
 
 if __name__ == "__main__":
