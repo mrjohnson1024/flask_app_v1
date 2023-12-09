@@ -1,39 +1,23 @@
 import os
 from flask import Flask, render_template, jsonify
+from db import engine, text
 
 app = Flask(__name__)
 
-LIST = [
-    {
-        'id': 1,
-        'name': "First item",
-        'location': "Phoenix, AZ",
-        'qty': '47'
-    },
-    {
-        'id': 2,
-        'name': "Second item",
-        'location': "Atlanta, GA",
-        'qty': '6874'
-    },
-    {
-        'id': 3,
-        'name': "Third item",
-        'location': "Chicago, IL",
-        'qty': '11254'
-    },
-    {
-        'id': 4,
-        'name': "Fourth item",
-        'location': "Washington, D.C.",
-        'qty': '87'
-    },
-]
+
+def load_jobs_from_db():
+  with engine.connect() as conn:
+    result = conn.execute(text("select * from jobs"))
+    jobs = []
+    for row in result.all():
+      jobs.append(row._asdict())
+    return jobs
 
 
 @app.route("/")
 def something():
-  return render_template('home.html', items=LIST)
+  jobs = load_jobs_from_db()
+  return render_template('home.html', items=jobs)
 
 
 @app.route("/api")
