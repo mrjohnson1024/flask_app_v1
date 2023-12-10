@@ -1,18 +1,8 @@
 import os
 from flask import Flask, render_template, jsonify
-from database import engine
-from sqlalchemy import text
+from database import load_jobs_from_db, load_jobs_with_select
 
 app = Flask(__name__)
-
-
-def load_jobs_from_db():
-  with engine.connect() as conn:
-    result = conn.execute(text("select * from jobs"))
-    jobs = []
-    for row in result.all():
-      jobs.append(row._asdict())
-    return jobs
 
 
 @app.route("/")
@@ -21,7 +11,7 @@ def something():
   return render_template('home.html', items=jobs)
 
 
-@app.route("/api")
+@app.route("/api/jobs")
 def list_LIST():
   jobs = load_jobs_from_db()
   return jsonify(jobs)
